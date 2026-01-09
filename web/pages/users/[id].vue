@@ -11,7 +11,14 @@ if (!Number.isFinite(id)) {
 const config = useRuntimeConfig();
 
 const { data: user, pending, error } = await useFetch<User>(
-    `${config.public.apiBase}/api/users/${id}`
+    `${config.public.apiBase}/api/users/${id}`,
+    {
+        onResponseError({ response }) {
+            if (response.status === 404) {
+                throw createError({ statusCode: 404, statusMessage: 'User Not Found' });
+            }
+        },
+    }
 );
 </script>
 
