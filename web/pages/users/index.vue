@@ -10,7 +10,9 @@ const { data: users, pending, error } = await useUsers();
 
         <ul v-else>
             <li v-for="u in users" :key="u.id">
-                {{ u.id }} - {{ u.name }}
+                <NuxtLink :to="`/users/${u.id}`">
+                    {{ u.id }} - {{ u.name }}
+                </NuxtLink>
             </li>
         </ul>
     </div>
