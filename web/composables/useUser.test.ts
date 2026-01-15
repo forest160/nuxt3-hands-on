@@ -22,7 +22,7 @@ describe("useUser", () => {
     expect(useFetchMock).toHaveBeenCalledTimes(1);
 
     const call = useFetchMock.mock.calls[0];
-    expect(call[0]).toBe("http://localhost:3001/api/users/123");
+    expect(call[0]).toBe("/api/users/123");
     expect(call[1]).toMatchObject({
       onResponseError: expect.any(Function),
     });
