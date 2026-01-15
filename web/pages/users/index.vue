@@ -41,5 +41,9 @@ const createUser = async () => {
         </button>
     </div>
 
+    <ul data-testid="user-list">
+        <li v-for="u in users" :key="u.id">{{ u.name }}</li>
+    </ul>
+
     <p v-if="message">{{ message }}</p>
 </template>
