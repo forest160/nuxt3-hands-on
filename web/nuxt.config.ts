@@ -1,7 +1,5 @@
 export default defineNuxtConfig({
   runtimeConfig: {
-    public: {
-      apiBase: "",
-    },
+    apiBase: process.env.API_BASE || "http://localhost:3001",
   },
 });

@@ -18,7 +18,7 @@ const createUser = async () => {
 
     submitting.value = true;
     try {
-        await $fetch<User>(`${config.public.apiBase}/api/users`, {
+        await $fetch<User>(`/api/users`, {
             method: 'POST',
             body: { name: v },
         });
