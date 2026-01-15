@@ -21,6 +21,16 @@ app.get("/api/users/:id", (req, res) => {
   res.json(user);
 });
 
+app.post("/api/users", (req, res) => {
+  const name = String(req.body?.name ?? "").trim();
+  if (!name) return res.status(400).json({ message: "name is required" });
+
+  const id = Math.max(...users.map((u) => u.id)) + 1;
+  const newUser = { id, name };
+  users.push(newUser);
+  res.status(201).json(newUser);
+});
+
 app.listen(3001, () => {
   console.log("API running on http://localhost:3001");
 });

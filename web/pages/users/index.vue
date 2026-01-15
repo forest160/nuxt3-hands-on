@@ -1,19 +1,45 @@
 <script setup lang="ts">
-const { data: users, pending, error } = await useUsers();
+import type { User } from '~/types/user';
+
+const config = useRuntimeConfig();
+const name = ref('');
+const message = ref<string | null>(null);
+const submitting = ref(false);
+
+const { data: users, pending, error, refresh } = await useUsers();
+
+const createUser = async () => {
+    message.value = null;
+    const v = name.value.trim();
+    if (!v) {
+        message.value = '名前を入力してください';
+        return;
+    }
+
+    submitting.value = true;
+    try {
+        await $fetch<User>(`${config.public.apiBase}/api/users`, {
+            method: 'POST',
+            body: { name: v },
+        });
+        name.value = '';
+        message.value = '追加しました';
+        await refresh(); // 一覧更新
+    } catch (e: any) {
+        message.value = e?.data?.message ?? '追加に失敗しました';
+    } finally {
+        submitting.value = false;
+    }
+};
 </script>
 
 <template>
-    <div style="padding:16px">
-        <h1>Users</h1>
-        <div v-if="pending">Loading...</div>
-        <div v-else-if="error">Error: {{ error.message }}</div>
-
-        <ul v-else>
-            <li v-for="u in users" :key="u.id">
-                <NuxtLink :to="`/users/${u.id}`">
-                    {{ u.id }} - {{ u.name }}
-                </NuxtLink>
-            </li>
-        </ul>
+    <div style="margin: 12px 0; display:flex; gap:8px; align-items:center;">
+        <input v-model="name" placeholder="Name" />
+        <button :disabled="submitting" @click="createUser">
+            {{ submitting ? 'Adding...' : 'Add' }}
+        </button>
     </div>
+
+    <p v-if="message">{{ message }}</p>
 </template>
