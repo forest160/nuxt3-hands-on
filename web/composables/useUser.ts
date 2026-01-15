@@ -1,4 +1,5 @@
 import type { User } from "~/types/user";
+import { useFetch, useRuntimeConfig, createError } from "#app";
 
 export const useUser = (id: number) => {
   const config = useRuntimeConfig();
