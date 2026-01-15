@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch server.ts"
+    "dev": "tsx watch server.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "cors": "^2.8.5",
