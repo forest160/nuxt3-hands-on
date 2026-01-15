@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useUser } from '~/composables/useUser';
 import type { User } from '~/types/user';
 
 const route = useRoute();
@@ -8,18 +9,7 @@ if (!Number.isFinite(id)) {
     throw createError({ statusCode: 400, statusMessage: 'Invalid user id' });
 }
 
-const config = useRuntimeConfig();
-
-const { data: user, pending, error } = await useFetch<User>(
-    `${config.public.apiBase}/api/users/${id}`,
-    {
-        onResponseError({ response }) {
-            if (response.status === 404) {
-                throw createError({ statusCode: 404, statusMessage: 'User Not Found' });
-            }
-        },
-    }
-);
+const { data: user, pending, error } = await useUser(id);
 </script>
 
 <template>
